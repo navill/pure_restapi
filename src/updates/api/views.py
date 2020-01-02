@@ -192,10 +192,6 @@ class UpdateModelListAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         # parser
         saved_data = json.loads(obj.serialize())
 
-        # saved_data = {
-        #     'user': obj.user,
-        #     'text': obj.text
-        # }
         for key, value in pass_data.items():
             saved_data[key] = value
 
@@ -239,6 +235,6 @@ class UpdateModelListAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         if deleted == 1:
             json_data = json.dumps({'message': 'Successfully deleted object'})
             return self.render_to_response(json_data, status=200)
-        # 비정상적인 삭제
+        # 비정상적인 삭제 실패
         error_data = json.dumps({'message': 'Could not delete item.'})
         return self.render_to_response(error_data, status=403)

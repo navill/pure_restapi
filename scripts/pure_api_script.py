@@ -31,6 +31,7 @@ def create_update():
     # 장고 내에서 익명의 유저로 Update 객체를 생성하려고 하기 때문에 에러를 일으킨다.
     # -> csrf_exam
     new_data = {
+        'id': 7,
         'user': 1,
         'text': 'Another cool contents'
     }
@@ -42,10 +43,10 @@ def create_update():
     return r.text
 
 
-print(get_list())
+# print(get_list())
 
 
-# print(create_update())
+print(create_update())
 
 
 def obj_update():

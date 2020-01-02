@@ -45,11 +45,6 @@ class Update(models.Model):
         return self.text
 
     def serialize(self):
-        # json_data = serialize('json', [self], fields=('user', 'text', 'image'))
-        # struct = json.loads(json_data)
-        # print(struct)
-        # # output: {"user": 1, "text": "test", "image": ""}
-
         try:
             image = self.image.url
         except:
