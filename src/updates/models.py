@@ -16,14 +16,15 @@ class UpdateQuerySet(models.QuerySet):
     #     return serialize('json', qs, fields=('user', 'content', 'image'))
     # 오버라이딩 메소드
     def serialize(self):
-        qs = self
-        final_array = []
-        for obj in qs:
-            # 직렬화된 데이터를 python type으로 변환
-            struct = json.loads(obj.serialize())  # django.core.serailizers.serialize
-            final_array.append(struct)
-            # dumps를 이용해 json type으로 변환
-        return json.dumps(final_array)
+        # QuerySet.values(<fields>)
+        list_values = list(self.values('id', 'user', 'text', 'image'))
+        # final_array = []
+        # for obj in list_values:
+        #     # 직렬화된 데이터를 python type으로 변환
+        #     struct = json.loads(obj.serialize())  # django.core.serailizers.serialize
+        #     final_array.append(struct)
+        #     # dumps를 이용해 json type으로 변환
+        return json.dumps(list_values)
 
 
 class UpdateManager(models.Manager):
@@ -44,8 +45,21 @@ class Update(models.Model):
         return self.text
 
     def serialize(self):
-        json_data = serialize('json', [self], fields=('user', 'content', 'image'))
-        struct = json.loads(json_data)
-        print(struct)
-        data = json.dumps(struct[0]['fields'])
+        # json_data = serialize('json', [self], fields=('user', 'text', 'image'))
+        # struct = json.loads(json_data)
+        # print(struct)
+        # # output: {"user": 1, "text": "test", "image": ""}
+
+        try:
+            image = self.image.url
+        except:
+            image = ''
+        data = {
+            'id': self.id,
+            'text': self.text,
+            'user': self.user.id,
+            'image': image,
+        }
+
+        data = json.dumps(data)
         return data
