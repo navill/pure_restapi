@@ -373,3 +373,4 @@ secret.py
 secret_key.py
 s3_upload.py
 temp.py
+requirements.txt
