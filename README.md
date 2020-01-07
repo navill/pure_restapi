@@ -12,11 +12,11 @@
 - json.dumps: python 데이터를 json(binary)로 변환
 - [django.core.serializers.serialize]: django에서 제공하는 직렬화 클래스
 
-**Mixin**
+**[Mixin](https://github.com/navill/pure_restapi/tree/master/src/updates/api#mixin)**
 
-**Model**
+**[Model](https://github.com/navill/pure_restapi/tree/master/src/updates#model)**
 
-**View**
+**[View](https://github.com/navill/pure_restapi/tree/master/src/updates/api#view)**
 
 - GET
 - PUT
