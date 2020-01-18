@@ -50,7 +50,7 @@ class StatusAPIView(
     # permission -> 객체에 어떤 권한을 줄것인가?
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     # authentication -> 인증을 어떻게 할 것인가?
-    authentication_classes = [SessionAuthentication]  # Oauth, JWT
+    # authentication_classes = [SessionAuthentication]  # Oauth, JWT
 
     serializer_class = StatusSerializer
     passed_id = None

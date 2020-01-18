@@ -15,8 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
-from updates.views import JsonCVB, JsonCVB2, SerializerListView, SerializerDetailView
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +25,5 @@ urlpatterns = [
     # path('json/serialized/detail/', SerializerDetailView.as_view()),
     path('api/updates/', include('updates.api.urls')),
     path('api/status/', include('status.api.urls')),
+    path('api/auth/', include('accounts.api.urls')),
 ]
