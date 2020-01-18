@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework import permissions, generics
 from rest_framework_jwt.settings import api_settings
 
+from accounts.api.permissions import AnonPermissionOnly
 from accounts.api.serializers import UserRegisterSerializer
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -16,7 +17,7 @@ User = get_user_model()
 
 class AuthAPIView(APIView):
     # authentication_classes = []
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [AnonPermissionOnly]
 
     def post(self, request, *args, **kwargs):
         # header에 token을 가지고 로그인을 시도할 경우
@@ -47,7 +48,7 @@ class AuthAPIView(APIView):
 class RegisterAPIView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [AnonPermissionOnly]
 
     def get_serializer_context(self, *args, **kwargs):
         return {'request': self.request}

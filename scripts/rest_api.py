@@ -3,9 +3,9 @@ import os
 import requests
 import json
 
-AUTH_ENDPOINT = "http://127.0.0.1:8000/api/auth/register/"
+AUTH_ENDPOINT = "http://127.0.0.1:8000/api/auth/"
 REFRESH_ENDPOINT = "http://127.0.0.1:8000/api/auth/jwt/refresh/"
-ENDPOINT = "http://127.0.0.1:8000/api/status/"
+
 # script 폴더 내에 이미지가 있어야 한다.
 image_path = os.path.join(os.getcwd(), 'django-icon-0.jpg')
 
@@ -14,15 +14,67 @@ headers = {
 }
 
 data = {
-    'username': 'j31adsdf3ddd32',
-    'email': 'jh13dadsfd32@naver.com',
+    'username': 'jihoon',
     'password': 'gkdl1493',
-    'password2': 'gkdl1493',
 }
 # json 데이터를 이용할 경우(application/json) 반드시 json.dumps로 전달
 r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
-token = r.json()  # ['token']
+token = r.json()['token']
 print(token)
+
+ENDPOINT = "http://127.0.0.1:8000/api/status/29/"
+headers2 = {
+    # 'Content-Type': 'application/json',
+    'Authorization': 'JWT ' + token,
+}
+data2 = {
+    'content': 'this new content post'
+}
+
+with open(image_path, 'rb') as image:
+    file_data = {
+        # serializer field
+        'image': image
+    }
+    r = requests.put(ENDPOINT, data=data2, headers=headers2, files=file_data)
+    print(r.text)
+
+
+
+
+
+
+
+
+
+# token = r.json()  # ['token']
+
+
+# AUTH_ENDPOINT = "http://127.0.0.1:8000/api/auth/register/"
+# REFRESH_ENDPOINT = "http://127.0.0.1:8000/api/auth/jwt/refresh/"
+# ENDPOINT = "http://127.0.0.1:8000/api/status/"
+# # script 폴더 내에 이미지가 있어야 한다.
+# image_path = os.path.join(os.getcwd(), 'django-icon-0.jpg')
+#
+# headers = {
+#     'Content-Type': 'application/json',
+# }
+#
+# auth_headers = {
+#     "Content-Type": "application/json",
+#     "Authorization": "JWT " + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNywidXNlcm5hbWUiOiJqM2QxYWRzZGYzZGRkMzIiLCJleHAiOjE1NzkzNTUwNjUsImVtYWlsIjoiamgxM2RkYWRzZmQzMkBuYXZlci5jb20iLCJvcmlnX2lhdCI6MTU3OTM1NDc2NX0.4sPIWgy3vv0SsQRyA_FUIxpjvwo8wOxOWwkNYo1tOeM',
+# }
+#
+# data = {
+#     'username': 'j3d1adsdf3dddd32',
+#     'email': 'jh13ddaddsfd32@naver.com',
+#     'password': 'gkdl1493',
+#     'password2': 'gkdl1493',
+# }
+# # json 데이터를 이용할 경우(application/json) 반드시 json.dumps로 전달
+# r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=auth_headers)
+# token = r.json()  # ['token']
+# print(token)
 
 
 # refresh_token = {
