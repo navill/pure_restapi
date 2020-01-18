@@ -25,7 +25,7 @@ class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Status
         fields = [
-            'user', 'content', 'image'
+            'id', 'user', 'content', 'image'
         ]
 
     # model field level validation
