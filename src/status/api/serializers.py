@@ -27,6 +27,7 @@ class StatusSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'user', 'content', 'image'
         ]
+        read_only_fields = ['user']  # GET
 
     # model field level validation
     # def validate_<field_name>

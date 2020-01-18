@@ -121,3 +121,5 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static-server', 'media_root')
 MEDIA_URL = '/mdedia/'
+
+from config.restconf.main import *

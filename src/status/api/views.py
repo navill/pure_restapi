@@ -1,9 +1,7 @@
 import json
 
-from django.shortcuts import get_object_or_404
-from rest_framework import generics, mixins
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework import generics, mixins, permissions
+from rest_framework.authentication import SessionAuthentication
 
 from status.models import Status
 from .serializers import StatusSerializer
@@ -47,12 +45,12 @@ class StatusDetailAPIView(mixins.UpdateModelMixin,
 
 class StatusAPIView(
     mixins.CreateModelMixin,
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
     generics.ListAPIView):  # Create + List
-
-    permission_classes = []
-    authentication_classes = []
+    # login required mixin
+    # permission -> 객체에 어떤 권한을 줄것인가?
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # authentication -> 인증을 어떻게 할 것인가?
+    authentication_classes = [SessionAuthentication]  # Oauth, JWT
 
     serializer_class = StatusSerializer
     passed_id = None
@@ -67,6 +65,10 @@ class StatusAPIView(
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+    # serializer를 통해 객체 생성 중 user에 request.user를 입력한다.
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 # class StatusAPIView(
 #     mixins.CreateModelMixin,

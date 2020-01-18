@@ -2,7 +2,22 @@ import requests
 import json
 
 BASE_URL = 'http://127.0.0.1:8000/'
-ENDPOINT = 'api/updates/'
+ENDPOINT = 'http://127.0.0.1:8000/api/status/'
+
+get_endpoint = ENDPOINT + str(14)
+post_data = json.dumps({'content': 'Some random content'})
+
+r = requests.get(get_endpoint)
+print(r.text)
+r2 = requests.get(ENDPOINT)
+print(r2.status_code)
+
+post_headers = {
+    'content-type': 'application/json',
+}
+
+post_response = requests.post(ENDPOINT, data=post_data, headers=post_headers)
+print(post_response.text)  # authentication error
 
 
 def get_list(id=None):  # --> list
@@ -46,7 +61,7 @@ def create_update():
 # print(get_list())
 
 
-print(create_update())
+# print(create_update())
 
 
 def obj_update():
