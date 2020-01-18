@@ -24,5 +24,6 @@ urlpatterns = [
     # path('json/cbv2/', JsonCVB2.as_view()),
     # path('json/serialized/list/', SerializerListView.as_view()),
     # path('json/serialized/detail/', SerializerDetailView.as_view()),
-    path('api/updates/', include('updates.api.urls'))
+    path('api/updates/', include('updates.api.urls')),
+    path('api/status/', include('status.api.urls')),
 ]

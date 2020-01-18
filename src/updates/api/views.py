@@ -130,9 +130,19 @@ class UpdateModelListAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         return HttpResponse(data, content_type='application/json', status=status)
 
     def get(self, request, *args, **kwargs):
-        qs = self.get_queryset()
-        json_data = qs.serialize()
-        return self.render_to_response(json_data)
+        data = json.loads(request.body)
+        passed_id = data.get('id', None)
+        if passed_id is not None:
+            obj = self.get_object(id=passed_id)
+            if obj is None:
+                error_data = json.dumps({'messeage': 'object not found'})
+                return self.render_to_response(error_data, status=404)
+            json_data = obj.serialize()
+            return self.render_to_response(json_data)
+        else:
+            qs = self.get_queryset()
+            json_data = qs.serialize()
+            return self.render_to_response(json_data)
 
     def post(self, request, *args, **kwargs):
         # json validation
