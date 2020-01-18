@@ -14,8 +14,8 @@ headers = {
 }
 
 data = {
-    'username': 'jihoon332',
-    'email': 'jihoon332@naver.com',
+    'username': 'ji312',
+    'email': 'jih132@naver.com',
     'password': 'gkdl1493',
     'password2': 'gkdl1493',
 }
