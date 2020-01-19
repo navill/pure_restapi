@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
+from accounts.api.serializers import UserPublicSerializer
 from status.models import Status
-
 """
 # forms.py
 폼 형태와 거의 동일하다.
@@ -16,16 +16,32 @@ serializers -> JSON 데이터 처리 + Validation
 """
 
 
+class StatusInlineUserSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Status
+        fields = [
+            'url', 'id', 'content', 'image'
+        ]
+
+    def get_url(self, obj):
+        return f'api/status/{obj.id}'
+
+
 class CustomSerializer(serializers.Serializer):
     content = serializers.CharField()
     email = serializers.EmailField()
 
 
 class StatusSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField(read_only=True)
+    user = UserPublicSerializer(read_only=True)
+
     class Meta:
         model = Status
         fields = [
-            'id', 'user', 'content', 'image'
+            'url', 'id', 'user', 'content', 'image'
         ]
         read_only_fields = ['user']  # GET
 
@@ -46,3 +62,6 @@ class StatusSerializer(serializers.ModelSerializer):
         if content is None and image is None:
             raise serializers.ValidationError('Content or image is required.')
         return data
+
+    def get_url(self, obj):
+        return f'api/status/{obj.id}'

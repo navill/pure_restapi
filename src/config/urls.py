@@ -26,4 +26,5 @@ urlpatterns = [
     path('api/updates/', include('updates.api.urls')),
     path('api/status/', include('status.api.urls')),
     path('api/auth/', include('accounts.api.urls')),
+    path('api/users/', include('accounts.api.user.urls')),
 ]
