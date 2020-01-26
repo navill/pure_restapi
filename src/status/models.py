@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 
 
 def upload_status_image(instance, filename):
@@ -34,3 +35,16 @@ class Status(models.Model):
     @property
     def owner(self):
         return self.user
+
+
+CHOICE_VALUE = (
+    ('quad', 'Quad'),
+    ('miner', 'Miner'),
+    ('model', 'Model')
+)
+
+
+class QuadModel(models.Model):
+    choice_field = models.CharField(choices=CHOICE_VALUE, default='quad', max_length=10, null=True, blank=True)
+    chr = models.CharField(max_length=10, null=True, blank=True)
+

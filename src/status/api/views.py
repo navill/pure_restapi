@@ -1,11 +1,14 @@
 import json
 
+from django.views.generic import ListView
+from django.views.generic.base import View
 from rest_framework import generics, mixins, permissions
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.generics import ListAPIView
 
 from accounts.api.permissions import IsOwnerOrReadOnly
-from status.models import Status
-from .serializers import StatusSerializer
+from status.models import Status, QuadModel
+from .serializers import StatusSerializer, QuadSerializer
 
 
 def is_json(json_data):
@@ -168,3 +171,8 @@ class StatusAPIView(
 #
 #     queryset = Status.objects.all()
 #     serializer_class = StatusSerializer
+
+
+class QuadView(ListAPIView):
+    queryset = QuadModel.objects.all()
+    serializer_class = QuadSerializer

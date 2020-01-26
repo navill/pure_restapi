@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 # from status.api.serializers import StatusInlineUserSerializer
 from status.api.serializers import StatusInlineUserSerializer
+from rest_framework.reverse import reverse as api_reverse
 
 User = get_user_model()
 
@@ -10,14 +11,19 @@ User = get_user_model()
 class UserDetailSerializer(serializers.ModelSerializer):
     url = serializers.SerializerMethodField(read_only=True)
     status = serializers.SerializerMethodField(read_only=True)
+    # statuses = serializers.HyperlinkedRelatedField(source='status_set',  # Status.objects.filter(user=user)
+    #                                                many=True, read_only=True, lookup_field='id',
+    #                                                view_name='api_status:detail')
 
     # status_url = serializers.SerializerMethodField(read_only=True)
     # recent_status = serializers.SerializerMethodField(read_only=True)
 
+    statuses = StatusInlineUserSerializer(source='status_set', many=True, read_only=True)
+
     class Meta:
         model = User
         fields = [
-            'id', 'username', 'url', 'status',
+            'id', 'username', 'statuses', 'url', 'status',
         ]
 
     def get_status(self, obj):
@@ -38,5 +44,5 @@ class UserDetailSerializer(serializers.ModelSerializer):
         return data
 
     def get_url(self, obj):
-        return f"/api/users/{obj.id}/"
-
+        request = self.context.get('request')
+        return api_reverse("api_user:detail", kwargs={"username": obj.username}, request=request)
