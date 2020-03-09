@@ -7,8 +7,8 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.generics import ListAPIView
 
 from accounts.api.permissions import IsOwnerOrReadOnly
-from status.models import Status, QuadModel
-from .serializers import StatusSerializer, QuadSerializer
+from status.models import Status
+from .serializers import StatusSerializer
 
 
 def is_json(json_data):
@@ -71,7 +71,7 @@ class StatusAPIView(
         return self.create(request, *args, **kwargs)
 
     # serializer를 통해 객체 생성 중 user에 request.user를 입력한다.
-    def perform_create(self, serializer):
+    def perform_create(self, serializer):  # perform_create -> 새 객체 생성 시 CreateModelMixin 호출
         serializer.save(user=self.request.user)
 
 # class StatusAPIView(
@@ -172,7 +172,3 @@ class StatusAPIView(
 #     queryset = Status.objects.all()
 #     serializer_class = StatusSerializer
 
-
-class QuadView(ListAPIView):
-    queryset = QuadModel.objects.all()
-    serializer_class = QuadSerializer

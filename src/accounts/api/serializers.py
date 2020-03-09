@@ -56,7 +56,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         pw = data.get('password')
-        # password2는 계정 생성 시 유효하지 않 변수로 판단하여기 때문에 포함되면 안됨
+        # password2는 계정 생성 시 유효하지 않은 변수로 판단하여기 때문에 포함되면 안됨
         # TypeError: 'password2' is an invalid keyword argument for this function
         pw2 = data.pop('password2')
         if pw != pw2:
@@ -68,7 +68,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         user_obj = User(username=validated_data.get('username'),
                         email=validated_data.get('email'))
         user_obj.set_password(validated_data.get('password'))
-        user_obj.is_active = False
+        user_obj.is_active = True
         user_obj.save()
         return user_obj
 

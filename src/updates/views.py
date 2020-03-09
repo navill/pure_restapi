@@ -43,7 +43,6 @@ class JsonCVB2(JsonResponseMixin, View):
 
 
 class SerializerDetailView(View):
-
     def get(self, request, *args, **kwargs):
         obj = Update.objects.get(id=1)
         json_data = obj.serialize()
@@ -51,9 +50,9 @@ class SerializerDetailView(View):
 
 
 class SerializerListView(View):
-
     def get(self, request, *args, **kwargs):
         qs = Update.objects.all()
         json_data = qs.serialize()
+        print(json_data)
         # HttpResponse(content=b'') -> json 타입 데이터를 매개 변수로 받는다
         return HttpResponse(content=json_data, content_type='application/json')

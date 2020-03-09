@@ -1,106 +1,122 @@
 import os
-
 import requests
 import json
-
-AUTH_ENDPOINT = "http://127.0.0.1:8000/api/auth/"
-REFRESH_ENDPOINT = "http://127.0.0.1:8000/api/auth/jwt/refresh/"
-
-# script 폴더 내에 이미지가 있어야 한다.
+ENDPOINT = f"http://127.0.0.1:8000/api/status/"
 image_path = os.path.join(os.getcwd(), 'django-icon-0.jpg')
-
 headers = {
     'Content-Type': 'application/json',
 }
 
-data = {
+user_data = {
     'username': 'jihoon',
     'password': 'gkdl1493',
 }
+
+
 # json 데이터를 이용할 경우(application/json) 반드시 json.dumps로 전달
-r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
-token = r.json()['token']
-print(token)
+def get_token(headers, user_data):
+    endpoint = "http://127.0.0.1:8000/api/auth/"
+    r = requests.post(endpoint, data=json.dumps(user_data), headers=headers)
+    token = r.json()['token']
+    print(token)
+    return token
 
-ENDPOINT = "http://127.0.0.1:8000/api/status/29/"
-headers2 = {
-    # 'Content-Type': 'application/json',
-    'Authorization': 'JWT ' + token,
-}
-data2 = {
-    'content': 'this new content post'
-}
 
-with open(image_path, 'rb') as image:
-    file_data = {
-        # serializer field
-        'image': image
+# 로그인 후 토큰 획득
+# token = get_token(headers, user_data)
+
+
+##################################################################################
+def update_with_image(token, image_path, id):
+    endpoint = f"http://127.0.0.1:8000/api/status/{id}/"
+    headers = {
+        # 'Content-Type': 'application/json',
+        'Authorization': 'JWT ' + token,
     }
-    r = requests.put(ENDPOINT, data=data2, headers=headers2, files=file_data)
-    print(r.text)
+    data = {
+        'content': 'this new content post'
+    }
+    # script 폴더 내에 이미지가 있어야 한다.
+    with open(image_path, 'rb') as image:
+        file_data = {
+            # serializer field
+            'image': image
+        }
+        # data는 raw(JSON이 아닌 python 데이터 타입)데이터를 사용한다.
+        r = requests.put(endpoint, data=data, headers=headers, files=file_data)
+        print(r.text)
 
 
-
-
-
-
-
+# 컨텐츠 + 이미지 업데이트(put)
+# update_with_image(token, image_path, 28)
 
 
 # token = r.json()  # ['token']
 
+##########################################################################
 
-# AUTH_ENDPOINT = "http://127.0.0.1:8000/api/auth/register/"
-# REFRESH_ENDPOINT = "http://127.0.0.1:8000/api/auth/jwt/refresh/"
-# ENDPOINT = "http://127.0.0.1:8000/api/status/"
-# # script 폴더 내에 이미지가 있어야 한다.
-# image_path = os.path.join(os.getcwd(), 'django-icon-0.jpg')
-#
-# headers = {
-#     'Content-Type': 'application/json',
-# }
-#
-# auth_headers = {
-#     "Content-Type": "application/json",
-#     "Authorization": "JWT " + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNywidXNlcm5hbWUiOiJqM2QxYWRzZGYzZGRkMzIiLCJleHAiOjE1NzkzNTUwNjUsImVtYWlsIjoiamgxM2RkYWRzZmQzMkBuYXZlci5jb20iLCJvcmlnX2lhdCI6MTU3OTM1NDc2NX0.4sPIWgy3vv0SsQRyA_FUIxpjvwo8wOxOWwkNYo1tOeM',
-# }
-#
-# data = {
-#     'username': 'j3d1adsdf3dddd32',
-#     'email': 'jh13ddaddsfd32@naver.com',
-#     'password': 'gkdl1493',
-#     'password2': 'gkdl1493',
-# }
-# # json 데이터를 이용할 경우(application/json) 반드시 json.dumps로 전달
-# r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=auth_headers)
-# token = r.json()  # ['token']
-# print(token)
+def do_refresh_token(endpoint=ENDPOINT):
+    auth_endpoint = "http://127.0.0.1:8000/api/auth/register/"
+    refresh_endpoint = "http://127.0.0.1:8000/api/auth/jwt/refresh/"
+
+    headers = {
+        'Content-Type': 'application/json',
+    }
+
+    auth_headers = {
+        "Content-Type": "application/json",
+        "Authorization": "JWT " + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6ImppaG9vbiIsImV4cCI6MTU4MzY5Mjg2MiwiZW1haWwiOiJqaWhvb25AbmF2ZXIuY29tIiwib3JpZ19pYXQiOjE1ODM2OTI1NjJ9.wT07v1iSXxbI_jWI74eAvinceJt4vfXEWPOB3LCYZug',
+    }
+
+    data = {
+        'username': 'ddddl2ads5dfd132',
+        'email': '53dd2@naver.com',
+        'password': '1234',
+        'password2': '1234',
+    }
+
+    data_content = {
+        'content': 'this new content post'
+    }
+    # json 데이터를 이용할 경우(application/json) 반드시 json.dumps로 전달 - 회원가입 후 토큰 획득
+    r = requests.post(auth_endpoint, data=json.dumps(data), headers=headers)
+    token = r.json()['token']
+    print(token)
+
+    refresh_token = {
+        'token': str(token)
+    }
+    # token 값 변경
+    import time
+    time.sleep(2)
+    r = requests.post(refresh_endpoint, data=json.dumps(refresh_token), headers=headers)
+    print(r.json())
 
 
-# refresh_token = {
-#     'token': token
-# }
-#
-# r = requests.post(REFRESH_ENDPOINT, data=json.dumps(refresh_token), headers=headers)
-# print(r.json())
+do_refresh_token()
+
 
 # image upload test
-# headers = {
-#     # "Content-Type": "application/json",
-#     "Authorization": "JWT " + token,
-# }
-#
-# with open(image_path, 'rb') as image:
-#     file_data = {
-#         # serializer field
-#         'image': image
-#     }
-#
-#     post_data = {'content': 'some random content'}  # json.dumps({'content': 'some random content'})
-#     posted_response = requests.post(ENDPOINT, data=post_data, headers=headers, files=file_data)
-#
-#     print(posted_response.text)
-#
+def upload_image(headers, user_data, endpoint=ENDPOINT):
+
+    headers = {
+        # "Content-Type": "application/json",
+        "Authorization": "JWT " + get_token(headers, user_data),
+    }
+
+    with open(image_path, 'rb') as image:
+        file_data = {
+            # serializer field
+            'image': image
+        }
+
+        post_data = {'content': 'some random content'}  # json.dumps({'content': 'some random content'})
+        posted_response = requests.post(endpoint, data=post_data, headers=headers, files=file_data)
+
+        print(posted_response.text)
+
+# upload_image(headers, user_data)
+
 # # put test
 # headers = {
 #     "Content-Type": "application/json",
@@ -114,7 +130,7 @@ with open(image_path, 'rb') as image:
 # print(posted_response.text)
 
 
-def image_do(method='get', data={}, is_json=True, img_path=None):
+def image_do(method='get', data={}, is_json=True, img_path=None, endpoint=ENDPOINT):
     headers = {}
 
     if is_json:
@@ -126,9 +142,9 @@ def image_do(method='get', data={}, is_json=True, img_path=None):
                 # serializer field
                 'image': image
             }
-            r = requests.request(method, ENDPOINT, data=data, files=file_data)
+            r = requests.request(method, endpoint, data=data, files=file_data)
     else:
-        r = requests.request(method, ENDPOINT, data=data, headers=headers)
+        r = requests.request(method, endpoint, data=data, headers=headers)
     print(r.text)
     print(r.status_code)
     return r

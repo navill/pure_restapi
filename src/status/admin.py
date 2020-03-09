@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from status.forms import StatusForm
-from status.models import Status, QuadModel
+from status.models import Status
 
 
 class StatusAdmin(admin.ModelAdmin):
@@ -16,5 +16,3 @@ class StatusAdmin(admin.ModelAdmin):
 
 admin.site.register(Status, StatusAdmin)
 
-
-admin.site.register(QuadModel)

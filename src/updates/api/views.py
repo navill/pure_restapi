@@ -13,7 +13,7 @@ from django.views.generic import View
 # retrieve, create, update, delete
 class UpdateModelDetailAPIView(HttpResponseMixin, CSRFExemptMixin, View):
     """
-    Retrieve, update, delete -> single object
+    Retrieve, update, delete -> 단일 객체 처리
     """
     is_json = True
 
@@ -22,9 +22,6 @@ class UpdateModelDetailAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         #     obj = UpdateModel.objects.get(id=id)
         # except UpdateModel.DoesNotExist:
         #     obj = None
-        """
-        below handles a Does Not exist exception too
-        """
         qs = UpdateModel.objects.filter(id=id)
         if qs.count() == 1:
             return qs.first()
@@ -34,25 +31,25 @@ class UpdateModelDetailAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         # print(request.GET.get('id'))
         obj = self.get_object(id=id)
         if obj is None:
-            error_data = json.dumps({'message': 'Update not found'})
+            error_data = json.dumps({'message': '객체를 찾을 수 없습니다.'})
             return self.render_to_response(error_data, status=404)
         json_data = obj.serialize()
         return self.render_to_response(json_data)
 
     def post(self, request, *args, **kwargs):
-        data = json.dumps({'message': 'Not allowed, please use the /api/updates/ endpoint'})
+        data = json.dumps({'message': 'POST는 허용되지 않습니다. PUT을 이용하거나 UpdateModelListAPIView의 endpoint를 사용하세요.'})
         return self.render_to_response(data, status=403)
 
     def put(self, request, id, *args, **kwargs):
         # json validation
         valid_json = is_json(request.body)
         if not valid_json:
-            error_data = json.dumps({'message': 'Invalid data sent, please send using JSON.'})
+            error_data = json.dumps({'message': '유효하지 않은 데이터, JSON 타입을 입력해주세요.'})
             return self.render_to_response(error_data, status=400)
         # get object
         obj = self.get_object(id=id)
         if obj is None:
-            error_data = json.dumps({'message': 'Update not found'})
+            error_data = json.dumps({'message': '객체를 찾을 수 없습니다.'})
             return self.render_to_response(error_data, status=404)
 
         # parser
@@ -84,16 +81,16 @@ class UpdateModelDetailAPIView(HttpResponseMixin, CSRFExemptMixin, View):
     def delete(self, request, id, *args, **kwargs):
         obj = self.get_object(id=id)
         if obj is None:
-            error_data = json.dumps({'message': 'Update not found'})
+            error_data = json.dumps({'message': '객체가 없습니다.'})
             return self.render_to_response(error_data, status=404)
         deleted, item_deleted = obj.delete()
         print(deleted, item_deleted)
         # print(deleted)
         if deleted == 1:
-            json_data = json.dumps({'message': 'Successfully deleted object'})
+            json_data = json.dumps({'message': '객체 삭제 완료'})
             return self.render_to_response(json_data, status=200)
         # 비정상적인 삭제
-        error_data = json.dumps({'message': 'Could not delete item.'})
+        error_data = json.dumps({'message': '객체를 지울 수 없습니다..'})
         return self.render_to_response(error_data, status=403)
 
 
@@ -135,7 +132,7 @@ class UpdateModelListAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         if passed_id is not None:
             obj = self.get_object(id=passed_id)
             if obj is None:
-                error_data = json.dumps({'messeage': 'object not found'})
+                error_data = json.dumps({'messeage': '객체를 찾을 수 없습니다.'})
                 return self.render_to_response(error_data, status=404)
             json_data = obj.serialize()
             return self.render_to_response(json_data)
@@ -148,7 +145,7 @@ class UpdateModelListAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         # json validation
         valid_json = is_json(request.body)
         if not valid_json:
-            error_data = json.dumps({'message': 'Invalid data sent, please send using JSON.'})
+            error_data = json.dumps({'message': '유효하지 않은 데이터, JSON 타입을 입력해주세요.'})
             return self.render_to_response(error_data, status=400)
         data = json.loads(request.body)
         form = UpdateModelForm(data)
@@ -174,17 +171,17 @@ class UpdateModelListAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         # json validation
         valid_json = is_json(request.body)
         if not valid_json:
-            error_data = json.dumps({'message': 'Invalid data sent, please send using JSON.'})
+            error_data = json.dumps({'message': 'JSON 타입의 데이터를 입력하세요.'})
             return self.render_to_response(error_data, status=400)
         pass_data = json.loads(request.body)
         pass_id = pass_data.get('id')
         if not pass_id:
-            error_data = json.dumps({'id': 'This is a required field to update an item.'})
+            error_data = json.dumps({'id': '업데이트 할 객체의 id를 입력해주세요.'})
             return self.render_to_response(error_data, status=400)
         # get object
         obj = self.get_object(id=pass_id)
         if obj is None:
-            error_data = json.dumps({'message': 'Object not found'})
+            error_data = json.dumps({'message': '객체를 찾을 수 없습니다.'})
             return self.render_to_response(error_data, status=404)
 
         # parser
@@ -213,26 +210,26 @@ class UpdateModelListAPIView(HttpResponseMixin, CSRFExemptMixin, View):
         # json validation
         valid_json = is_json(request.body)
         if not valid_json:
-            error_data = json.dumps({'message': 'Invalid data sent, please send using JSON.'})
+            error_data = json.dumps({'message': 'JSON 타입의 데이터를 입력하세요.'})
             return self.render_to_response(error_data, status=400)
         pass_data = json.loads(request.body)
         pass_id = pass_data.get('id')
         if not pass_id:
-            error_data = json.dumps({'id': 'This is a required field to update an item.'})
+            error_data = json.dumps({'id': '업데이트 할 객체의 id를 입력해주세요.'})
             return self.render_to_response(error_data, status=400)
 
         # get object
         obj = self.get_object(id=pass_id)
         if obj is None:
-            error_data = json.dumps({'message': 'Object not found'})
+            error_data = json.dumps({'message': '객체를 찾을 수 없습니다.'})
             return self.render_to_response(error_data, status=404)
 
         deleted, item_deleted = obj.delete()
         print(deleted, item_deleted)
         # print(deleted)
         if deleted == 1:
-            json_data = json.dumps({'message': 'Successfully deleted object'})
+            json_data = json.dumps({'message': '객체 삭제 완료'})
             return self.render_to_response(json_data, status=200)
         # 비정상적인 삭제 실패
-        error_data = json.dumps({'message': 'Could not delete item.'})
+        error_data = json.dumps({'message': '객체를 삭제할 수 없습니다.'})
         return self.render_to_response(error_data, status=403)

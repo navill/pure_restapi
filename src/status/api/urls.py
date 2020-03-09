@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 
-from status.api.views import StatusAPIView, StatusDetailAPIView, QuadView
+from status.api.views import StatusAPIView, StatusDetailAPIView
 
 app_name = 'status'
 
@@ -19,10 +19,9 @@ app_name = 'status'
 /api/status/ -> CRUDL + search
 """
 
-app_name = 'api_status'
+# app_name = 'api_status'
 
 urlpatterns = [
-    path('quad/', QuadView.as_view()),
     path('', StatusAPIView.as_view()),
     path('<id>/', StatusDetailAPIView.as_view(), name='detail'),
 ]

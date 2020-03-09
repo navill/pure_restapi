@@ -1,6 +1,6 @@
 ## Mixin
 
-- **JsonResponseMixin**: JsonResponse(<python data:dict>, **kwargs)에 의한 데이터 직렬화
+- **JsonResponseMixin**: JsonResponse(\<python data:dict\>, **kwargs)에 의한 데이터 직렬화
 
 - **HttpResponseMixin:** HttpResponse(<serialized_data:json>, **kwargs)에 의한 응답
 
@@ -56,7 +56,7 @@
 
     ```python
       # GET: api/updates/ -> List
-      # Post: api/updates/ -> Create
+      # POST: api/updates/ -> Create
       # GET: api/updates/1 -> Retrieve
       # PUT: api/updates/1 -> Update
       # DELETE: api/updates/1 -> Destroy
