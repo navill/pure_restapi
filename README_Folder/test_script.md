@@ -62,7 +62,7 @@ with open(image_path, 'rb') as image:
     print(r.text)
 ```
 
-![update_object](README_Folder/images/update_object.png)
+![update_object](images/update_object.png)
 
 - 정상적으로 객체가 업데이트 된다.
 
@@ -93,7 +93,7 @@ def upload_image(headers):
 upload_image(headers)
 ```
 
-![create_object](README_Folder/images/create_object.png)
+![create_object](images/create_object.png)
 
 
 
@@ -136,5 +136,5 @@ def do_refresh_token(endpoint=ENDPOINT):
 do_refresh_token()
 ```
 
-![refresh_token](README_Folder/images/refresh_token.png)
+![refresh_token](images/refresh_token.png)
 
