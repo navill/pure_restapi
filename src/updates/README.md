@@ -2,7 +2,7 @@
 
 - Update
 
-  - serialize(<type>, <instance>, <fields>): 매개 변수를 이용한 데이터 직렬화
+  - serialize(\<type>, \<instance>, \<fields>): 매개 변수를 이용한 데이터 직렬화
 
   - UpdateQuerySet: 모델 객체 직렬화하기 위한 serialize() 메소드
 

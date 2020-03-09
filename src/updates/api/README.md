@@ -2,7 +2,7 @@
 
 - **JsonResponseMixin**: JsonResponse(\<python data:dict\>, **kwargs)에 의한 데이터 직렬화
 
-- **HttpResponseMixin:** HttpResponse(<serialized_data:json>, **kwargs)에 의한 응답
+- **HttpResponseMixin:** HttpResponse(\<serialized_data:json>, **kwargs)에 의한 응답
 
   - serialize(): HttpRespnose의 매개변수 들어갈 직렬화 데이터 생성
 
