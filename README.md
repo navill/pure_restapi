@@ -23,4 +23,5 @@
 ## Test with DRF
 
 - 기본적인 DRF를 구성하고 테스트를 통해 구조와 동작 원리 이해
-- [요약 페이지]()
+- [요약 페이지](README_Folder/test_script.md)
+
